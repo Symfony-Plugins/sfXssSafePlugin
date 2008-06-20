@@ -5,7 +5,7 @@
  *
  * @package    symfony
  * @subpackage plugin
- * @author     Alexandre Mogère <amogere@sqli.com>
+ * @author     Alexandre Mogère
  *
  * @uses <a href="http://htmlpurifier.org/">HTML Purifier</a>
  */
@@ -32,10 +32,14 @@ function esc_xsssafe($dirty_html)
   
   if (!$purifier)
   {
-    // Set configuration
-    $config = HTMLPurifier_Config::createDefault();
+    $hasCustom     = false;
+    $aElements     = array();
+    $aAttributes   = array();
+    
+    // sets configuration
+    $config        = HTMLPurifier_Config::createDefault();
 
-    $definitions = sfConfig::get('app_sfXssSafePlugin_definition');
+    $definitions   = sfConfig::get('app_sfXssSafePlugin_definition');
     if (!empty($definitions))
     {
       foreach ($definitions as $def => $conf)
@@ -44,22 +48,92 @@ function esc_xsssafe($dirty_html)
         {
           foreach ($conf as $directive => $values)
           {
-            $config->set($def, $directive, $values); // $values can be a string or an ArrayList
+            if ($def == 'AutoFormat' && $directive != 'Custom')
+            {
+              // customizable elements
+              if ($directive == 'Element')
+              {
+                $aElements = $values;
+              }
+              // customizable attributes
+              elseif($directive == 'Attribute')
+              {
+                $aAttributes = $values;
+              }
+              $hasCustom = true;
+            }
+            else
+            {
+              if (($def == 'AutoFormat' && $directive == 'Custom') &&
+                  !class_exists("HTMLPurifier_Injector_$values"))
+              {
+                continue;
+              }
+              $config->set($def, $directive, $values);
+              // $values can be a string or an ArrayList
+            }
           }
         }
       }
     }
 
-    // Set the cache directory into Symfony cache directory
-    $config->set('Cache', 'SerializerPath', sfConfig::get('sf_cache_dir'));
-  
+    if (SF_ENVIRONMENT == 'dev' || SF_ENVIRONMENT == 'test')
+    {
+      // turns off cache
+      $config->set('Cache', 'DefinitionImpl', null);
+    }
+    else
+    {
+      // sets the cache directory into Symfony cache directory
+      $config->set('Cache', 'SerializerPath', sfConfig::get('sf_cache_dir'));
+    }
+
+    if ($hasCustom)
+    {
+      $def =& $config->getHTMLDefinition(true);
+
+      // adds custom elements
+      if (!empty($aElements))
+      {
+        foreach ($aElements as $name => $element)
+        {
+          $name = strtolower($name);
+          ${$name} =& $def->addElement(
+            $name,
+            $element['type'],
+            $element['contents'],
+            $element['attr_includes'],
+            $element['attr']
+          );
+          $factory = 'HTMLPurifier_AttrTransform_'.ucfirst($name).'Validator';
+          if (class_exists($factory))
+          {
+            ${$name}->attr_transform_post[] = new $factory();
+          }
+        }
+      }
+      
+      // adds custom attributs
+      if (!empty($aAttributes))
+      {
+        foreach ($aAttributes as $name => $attr)
+        {
+          $name = strtolower($name);
+          ${$name} =& $def->addAttribute(
+            $name,
+            $attr['attr_name'],
+            $attr['def']
+          );
+        }
+      }
+    }
+
     $purifier = new HTMLPurifier($config);
   }
   
   $clean_html = $purifier->purify($dirty_html);
   
   restore_error_handler();
-
   return $clean_html;
 }
 
@@ -80,7 +154,11 @@ function XssSafeErrorHandler($errno, $errstr, $errfile, $errline)
     return;
   }
 
-  throw new sfException(sprintf('{XssSafeHelper} Error at %s line %s (%s)', $errfile, $errline, $errstr));
+  throw new sfException(sprintf('{XssSafeHelper} Error at %s line %s (%s)',
+    $errfile,
+    $errline,
+    $errstr)
+  );
 }
 
 ?>

@@ -20,6 +20,63 @@ $definitions = array(
   'URI' =>
     array(
       'HostBlacklist' => array ('www.symfony-project.org')
+    ),
+  'HTML' =>
+    array(
+      'DefinitionID' => 'allow flash movies',
+      'DefinitionRev' => 1
+    ),
+  'AutoFormat' =>
+    array(
+      'Element' =>
+        array(
+          'param' => array(
+            'type' => false,
+            'contents' => 'Empty',
+            'attr_includes' => false,
+            'attr' => array(
+              'name' => 'Text',
+              'value' => 'Text'
+            )
+          ),
+          'object' => array(
+            'type' => 'Inline',
+            'contents' => 'Optional: param | Flow | #PCDATA',
+            'attr_includes' => false,
+            'attr' => array (
+              'type*' => 'Enum#application/x-shockwave-flash',
+              'width*' => 'Pixels',
+              'height*' => 'Pixels',
+              'data' => 'Text',
+              'bgcolor*' => 'Text',
+              'quality*' => 'Text'
+            )
+          ),
+          'embed' => array(
+            'type' => 'Block',
+            'contents' => 'Empty',
+            'attr_includes' => false,
+            'attr' => array(
+              'type*' => 'Enum#application/x-shockwave-flash',
+              'width*' => 'Pixels',
+              'height*' => 'Pixels',
+              'src*' => 'URI',
+              'flashvars' => 'Text',
+              'allowscriptaccess' => 'Enum#never',
+              'enablejsurls' => 'Enum#false',
+              'enablehref' => 'Enum#false',
+              'bgcolor' => 'Text',
+              'align' => 'Text',
+              'quality' => 'Text',
+              'wmode' => 'Text',
+              'pluginspage' => 'URI',
+              'saveembedtags' => 'Text',
+              'salign' => 'Text',
+              'scale' => 'Text',
+              'name' => 'Text'
+            )
+          )
+        )
     )
 );
 
@@ -29,7 +86,7 @@ sfConfig::set('app_sfXssSafePlugin_definition', $definitions);
 $xsssafe_tests = array(
   'XSS Quick Test' => array(
     'input'   => '\'\';!--"<XSS>=&{()}',
-    'output'  => '\'\';!--&quot;=&amp;{()}'
+    'output'  => '\'\';!--"=&amp;{()}'
   ),
   'SCRIPT w/Alert()' => array(
     'input'   => '<SCRIPT>alert(\'XSS\')</SCRIPT>',
@@ -173,7 +230,7 @@ $xsssafe_tests = array(
   ),
   'PHP' => array(
     'input'   => '<? echo(\'<SCR)\'; echo(\'IPT>alert("XSS")</SCRIPT>\'); ?>',
-    'output'  => ' echo(\'alert(&quot;XSS&quot;)\'); ?&gt;'
+    'output'  => ' echo(\'alert("XSS")\'); ?&gt;',
   ),
   'Character Encoding Example' => array(
     'input'   => '<
@@ -305,7 +362,7 @@ fromCharCode(88,83,83))>',
 END
 ,
     'output'  => <<<END
-\&quot;;alert('XSS');//
+\";alert('XSS');//
 END
   ),
   'End title tag' => array(
@@ -401,22 +458,34 @@ $miscellaneous_tests = array(
   'YouTube Filter' => array(
     'input'   => '<object width="425" height="355"><param name="movie" value="http://www.youtube.com/v/HLHKgepRZ8M&hl=fr"></param><param name="wmode" value="transparent"></param><embed src="http://www.youtube.com/v/HLHKgepRZ8M&hl=fr" type="application/x-shockwave-flash" wmode="transparent" width="425" height="355"></embed></object>',
     'output'  => '<object width="425" height="350" data="http://www.youtube.com/v/HLHKgepRZ8M"><param name="movie" value="http://www.youtube.com/v/HLHKgepRZ8M"></param><param name="wmode" value="transparent"></param><!--[if IE]><embed src="http://www.youtube.com/v/HLHKgepRZ8M"type="application/x-shockwave-flash"wmode="transparent" width="425" height="350" /><![endif]--></object>',
-    'filter'   => true
+    'filter'  => true
   ),
   'Allowed Frame Targets Filter' => array(
     'input'   => '<a href="" target="_blank"></a>',
     'output'  => '<a href="" target="_blank"></a>',
-    'filter'   => true
+    'filter'  => true
   ),
   'Enable ID' => array(
     'input'   => '<div id="test"></div>',
     'output'  => '<div id="test"></div>',
-    'filter'   => true
+    'filter'  => true
   ),
   'Host Blacklist' => array(
     'input'   => '<a href="http://www.symfony-project.org/">Symfony Project</a>',
     'output'  => '<a>Symfony Project</a>',
-    'filter'   => true
+    'filter'  => true
+  ),
+  'Enable Object' => array(
+    'input'   => '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" id="video_small" align="middle" height="370" width="417">
+<param name="allowScriptAccess" value="sameDomain">
+<param name="allowFullScreen" value="false">
+<param name="FlashVars" value="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv">
+<param name="movie" value="/player/player.swf"><param name="quality" value="high">
+<param name="bgcolor" value="#000000">
+<embed src="/player/player.swf" flashvars="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv" quality="high" bgcolor="#000000" name="video_small" allowscriptaccess="sameDomain" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="370" width="417">
+</object>',
+    'output'  => '<embed src="/player/player.swf" flashvars="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv" quality="high" bgcolor="#000000" name="video_small" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="370" width="417" allowscriptaccess="never" enablejsurls="false" enablehref="false" />',
+    'filter'  => true
   )
 );
  
@@ -438,7 +507,7 @@ foreach ($xsssafe_tests as $name => $test)
 $t->diag('HTML Purifier Config');
 foreach ($miscellaneous_tests as $name => $test)
 {
-  $t->is(esc_xsssafe($test['input']), $test['output'], $name . sprintf('%s', isset($test['filter']) ? ' is properly filtered' : ' is properly escaped'));
+  $t->is(trim(esc_xsssafe($test['input'])), $test['output'], $name . sprintf('%s', isset($test['filter']) ? ' is properly filtered' : ' is properly escaped'));
 }
 
 ?>

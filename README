@@ -56,24 +56,6 @@ all:
         RemoveInvalidImg:       true
         EscapeInvalidChildren:  false
         EscapeInvalidTags:      false
-        ColorKeywords:
-          maroon:               '#800000'
-          red:                  '#FF0000'
-          orange:               '#FFA500'
-          yellow:               '#FFFF00'
-          olive:                '#808000'
-          purple:               '#800080'
-          fuchsia:              '#FF00FF'
-          white:                '#FFFFFF'
-          lime:                 '#00FF00'
-          green:                '#008000'
-          navy:                 '#000080'
-          blue:                 '#0000FF'
-          aqua:                 '#00FFFF'
-          teal:                 '#008080'
-          black:                '#000000'
-          silver:               '#C0C0C0'
-          gray:                 '#808080'
 
       CSS:
         AllowImportant:         false
@@ -92,8 +74,100 @@ all:
         TidyFormat:             false
 }}}
 
+== More configuration ==
+
+Although HTML Purifier contains a large set of elements and attributes, you can customize others elements or attributes.
+
+The plugin's directory contains a sample which show how to allow to display flash movies :
+
+ - First add the following configuration in `app.yml` file :
+ 
+{{{
+all:
+  sfXssSafePlugin:
+    definition:
+    
+      HTML:
+        DefinitionID:              'allow flash movies' 
+        DefinitionRev:             1
+
+      AutoFormat:
+        Custom:                    AddParam # injector : call class "HTMLPurifier_Injector_AddParam"
+        Element:
+          - param:
+            type:                  false
+            contents:              Empty
+            attr_includes:         false
+            attr:
+              'name':              Text
+              'value':             Text
+              
+          - object:
+            type:                  Inline
+            contents:              'Optional: param | Flow | #PCDATA'
+            attr_includes:          false
+            attr:
+              'type*':             'Enum#application/x-shockwave-flash'
+              'width*':            Pixels
+              'height*':           Pixels
+              'data':              Text
+              'bgcolor*':          Text
+              'quality*':          Text
+              
+          - embed:
+            type:                  Block
+            contents:              Empty
+            attr_includes:         false
+            attr:
+              'type*':             'Enum#application/x-shockwave-flash'
+              'width*':            Pixels
+              'height*':           Pixels
+              'src*':              URI
+              'flashvars':         Text
+              'allowscriptaccess': 'Enum#never'
+              'enablejsurls':      'Enum#false'
+              'enablehref':        'Enum#false'
+              'bgcolor':           Text
+              'align':             Text
+              'quality':           Text
+              'wmode':             Text
+              'pluginspage':       URI
+              'saveembedtags':     Text
+              'salign':            Text
+              'scale':             Text
+              'name':              Text
+}}}
+
+`HTML.DefinitionID` is set to a unique identifier for your custom HTML definition. This prevents it from clobbering other custom definitions on the same installation.
+`HTML.DefinitionRev` is a revision integer of your HTML definition.
+`AutoFormat.Element` adds `param`, `object` and `embed` elements, with theirs allowed attributes.
+
+The same way you can add `AutoFormat.Attribute` to an element :
+
+{{{
+all:
+  sfXssSafePlugin:
+    definition:
+      AutoFormat:
+        Attribute:
+          - a:
+            attr_name:             target
+            def:                   'Enum#_blank,_self,_target,_top'
+}}}
+
+Then you can clean more the added element overloading HTML Purifier.
+For this, move the sample file `sfXssSafeObject.class.php` in the directory `lib` of your project.
+The file contains the classes of transformation for each element and also a custom auto-format injector.
+We called the injector `AddParam` in the configuration.
+
+Clear your cache to enable the autoloading symfony feature to find the new classes.
+
 == Changelog ==
+
+=== 2008-06-20 | 0.6.0 Beta ===
+
+ * heristop
 
 === 2008-05-19 | 0.5.0 Beta ===
 
- * amogere: Initial version
+ * heristop: Initial version
