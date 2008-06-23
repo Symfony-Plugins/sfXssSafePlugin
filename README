@@ -78,7 +78,7 @@ all:
 
 Although HTML Purifier contains a large set of elements and attributes, you can customize others elements or attributes.
 
-The plugin's directory contains a sample which show how to allow to display flash movies :
+The plugin contains a sample which show how to allow to display flash movies :
 
  - First add the following configuration in `app.yml` file :
  
@@ -142,7 +142,7 @@ all:
 `HTML.DefinitionRev` is a revision integer of your HTML definition.
 `AutoFormat.Element` adds `param`, `object` and `embed` elements, with theirs allowed attributes.
 
-The same way you can add `AutoFormat.Attribute` to an element :
+ - The same way you can add an attribute to an element with `AutoFormat.Attribute` :
 
 {{{
 all:
@@ -155,12 +155,13 @@ all:
             def:                   'Enum#_blank,_self,_target,_top'
 }}}
 
-Then you can clean more the added element overloading HTML Purifier.
-For this, move the sample file `sfXssSafeObject.class.php` in the directory `lib` of your project.
-The file contains the classes of transformation for each element and also a custom auto-format injector.
-We called the injector `AddParam` in the configuration.
+ - Then you can clean more the added element overloading HTML Purifier.
+For this, move the sample file `sfXssSafeObject.class.php` in the directory `lib` of your project
 
-Clear your cache to enable the autoloading symfony feature to find the new classes.
+The file contains the classes of transformation for each element.
+There is also an auto-format injector that we called `AddParam` in our example.
+
+Finally, clear your cache to enable the autoloading Symfony feature to find the new classes.
 
 == Changelog ==
 
