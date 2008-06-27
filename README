@@ -156,7 +156,7 @@ all:
 }}}
 
  - Then you can clean more the added element overloading HTML Purifier.
-For this, move the sample file `sfXssSafeObject.class.php` in the directory `lib` of your project
+For this, move the sample file `sfXssSafeObject.class.php` in the an autoloaded directory (`lib` of your project for instance).
 
 The file contains the classes of transformation for each element.
 There is also an auto-format injector that we called `AddParam` in our example.
@@ -165,9 +165,13 @@ Finally, clear your cache to enable the autoloading Symfony feature to find the 
 
 == Changelog ==
 
+=== 2008-06-27 | 0.6.1 Beta ===
+
+ * heristop : Migration to HTML Purifier 3.1.1
+
 === 2008-06-20 | 0.6.0 Beta ===
 
- * heristop
+ * heristop : Adding customizable elements
 
 === 2008-05-19 | 0.5.0 Beta ===
 
