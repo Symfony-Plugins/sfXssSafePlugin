@@ -230,104 +230,7 @@ $xsssafe_tests = array(
   ),
   'PHP' => array(
     'input'   => '<? echo(\'<SCR)\'; echo(\'IPT>alert("XSS")</SCRIPT>\'); ?>',
-    'output'  => ' echo(\'alert("XSS")\'); ?&gt;',
-  ),
-  'Character Encoding Example' => array(
-    'input'   => '<
-%3C
-&lt
-&lt;
-&LT
-&LT;
-&#60
-
-&#060
-&#0060
-
-&#00060
-&#000
-060
-&#0000060
-&#60;
-&#060;
-&
-#0060;
-&#00060;
-&#000060;
-&#
-0000060;
-&#x3c
-&#x03c
-&#x003
-c
-&#x0003c
-&#x00003c
-&#x0000
-03c
-&#x3c;
-&#x03c;
-
-&#x003c;
-
-&#x0003c;
-&#x00003c;
-&#x000
-003c;
-&#X3c
-&#X03c
-&#X003c
-&
-#X0003c
-&#X00003c
-&#X000003c
-
-&#X3c;
-&#X03c;
-&#X003c;
-&#X
-0003c;
-&#X00003c;
-&#X000003c
-;
-&#x3C
-
-&#x03C
-&#x003C
-&#x0
-003C
-&#x00003C
-&#x000003C
-&#
-x3C;
-&#x03C;
-&#x003C;
-&#x000
-3C;
-&#x00003C;
-&#x000003C;
-&
-#X3C
-&#X03C
-&#X003C
-&#X0003C
-
-&#X00003C
-&#X000003C
-
-&#X3C
-;
-&#X03C;
-&#X003C;
-&#X0003C;
-
-&#X00003C;
-&#X000003C;
-\x3c
-
-\x3C
-\u003c
-\u003C',
-    'output'  => ''
+    'output'  => '&lt;? echo(\'alert("XSS")\'); ?&gt;',
   ),
   'JavaScript Link Location' => array(
     'input'   => '<A HREF="javascript:document.location=\'http://www.google.com/\'">XSS</A>',
@@ -484,11 +387,11 @@ $miscellaneous_tests = array(
 <param name="bgcolor" value="#000000">
 <embed src="/player/player.swf" flashvars="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv" quality="high" bgcolor="#000000" name="video_small" allowscriptaccess="sameDomain" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="370" width="417">
 </object>',
-    'output'  => '<embed src="/player/player.swf" flashvars="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv" quality="high" bgcolor="#000000" name="video_small" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="370" width="417" allowscriptaccess="never" enablejsurls="false" enablehref="false" />',
+    'output'  => '<embed src="/player/player.swf" flashvars="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv" quality="high" bgcolor="#000000" name="video_small" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="370" width="417" enablejsurls="false" enablehref="false" allowfullscreen="true" />',
     'filter'  => true
   )
 );
- 
+
 $t = new lime_test(count($xsssafe_tests)+count($miscellaneous_tests)+2, new lime_output_color());
  
 // XssSafe Helper

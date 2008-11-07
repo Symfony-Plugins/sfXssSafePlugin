@@ -165,6 +165,10 @@ Finally, clear your cache to enable the autoloading Symfony feature to find the 
 
 == Changelog ==
 
+=== 2008-11-08 | 0.8  ===
+
+ * heristop : Migration to HTML Purifier 3.2
+
 === 2008-06-27 | 0.6.1 Beta ===
 
  * heristop : Migration to HTML Purifier 3.1.1
