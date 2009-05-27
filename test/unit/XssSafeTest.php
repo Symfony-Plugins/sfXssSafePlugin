@@ -1,10 +1,16 @@
 <?php
- 
+
+/**
+ * Unit tests for Sf 1.0
+ */
+
 // initializes testing framework
 $app = 'frontend';
-$sf_root = dirname(__FILE__).'/../../../..';
-require_once($sf_root.'/lib/symfony/vendor/lime/lime.php');
-include($sf_root.'/test/bootstrap/functional.php');
+
+$sf_symfony_dir = '/var/www/symfony/1.0/';
+
+require_once($sf_symfony_dir . '/lib/vendor/lime/lime.php');
+include(dirname(__FILE__).'/../../../../test/bootstrap/functional.php');
 
 // add filters to the default configuration
 $definitions = array(
@@ -62,9 +68,10 @@ $definitions = array(
               'height*' => 'Pixels',
               'src*' => 'URI',
               'flashvars' => 'Text',
-              'allowscriptaccess' => 'Enum#never',
+              /*'allowscriptaccess' => 'Enum#never',*/
               'enablejsurls' => 'Enum#false',
               'enablehref' => 'Enum#false',
+              'allowfullscreen' => 'Text',
               'bgcolor' => 'Text',
               'align' => 'Text',
               'quality' => 'Text',
@@ -381,13 +388,13 @@ $miscellaneous_tests = array(
   'Enable Object' => array(
     'input'   => '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" id="video_small" align="middle" height="370" width="417">
 <param name="allowScriptAccess" value="sameDomain">
-<param name="allowFullScreen" value="false">
+<param name="allowFullScreen" value="true">
 <param name="FlashVars" value="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv">
 <param name="movie" value="/player/player.swf"><param name="quality" value="high">
 <param name="bgcolor" value="#000000">
-<embed src="/player/player.swf" flashvars="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv" quality="high" bgcolor="#000000" name="video_small" allowscriptaccess="sameDomain" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="370" width="417">
+<embed src="/player/player.swf" flashvars="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv" quality="high" bgcolor="#000000" name="video_small" allowscriptaccess="sameDomain" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="370" width="417">
 </object>',
-    'output'  => '<embed src="/player/player.swf" flashvars="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv" quality="high" bgcolor="#000000" name="video_small" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="370" width="417" enablejsurls="false" enablehref="false" allowfullscreen="true" />',
+    'output'  => '<embed src="/player/player.swf" flashvars="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv" quality="high" bgcolor="#000000" name="video_small" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="370" width="417" allowscriptaccess="never" enablejsurls="false" enablehref="false" />',
     'filter'  => true
   )
 );
