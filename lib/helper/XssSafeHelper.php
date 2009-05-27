@@ -12,6 +12,11 @@
 
 define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/../vendor/htmlpurifier'));
 
+if (!class_exists('HTMLPurifier_Config'))
+{
+  require_once(realpath(dirname(__FILE__) . '/../vendor/htmlpurifier/HTMLPurifier.auto.php'));
+}
+
 /**
  * The function runs HTML Purifier as an alternative between
  * escaping raw and escaping entities.
