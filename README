@@ -28,12 +28,18 @@ As explained in the [http://www.symfony-project.org/book/1_0/07-Inside-the-View-
 
 {{{
 // In the action 
-$this->post->setContent('this is not nice <script>alert("XSS");</script>');
+$this->post = 'this is not <b>nice</b> <script>alert("XSS");</script>';
 
 // In the template
-<?php echo $post->getContent(ESC_XSSSAFE); ?>
+<?php echo $sf_data->get('post', ESC_XSSSAFE) ?>
  => 'this is not nice'
+
+// Without escaping
+<?php echo $sf_data->get('post', ESC_RAW) ?>
+ => an alert is displayed : XSS!
 }}}
+
+Be sure that the directory HTML in cache has the rights of writing. So you can clean HTMLPurifier cache with the command `symfony cc`.
 
 == Configuration ==
 
@@ -164,6 +170,11 @@ There is also an auto-format injector that we called `AddParam` in our example.
 Finally, clear your cache to enable the autoloading Symfony feature to find the new classes.
 
 == Changelog ==
+
+=== 2009-05-27 | 0.9 Beta  ===
+
+ * heristop : Migration to HTML Purifier 3.3
+ * keyes : Patch for Symfony 1.2
 
 === 2008-11-08 | 0.8  ===
 
