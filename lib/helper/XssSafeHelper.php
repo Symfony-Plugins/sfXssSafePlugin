@@ -14,7 +14,7 @@ define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/../vendor/htmlpurif
 
 if (!class_exists('HTMLPurifier_Config'))
 {
-  require_once(realpath(dirname(__FILE__) . '/../vendor/htmlpurifier/HTMLPurifier.auto.php'));
+  require_once(HTMLPURIFIER_PREFIX . '/HTMLPurifier.auto.php');
 }
 
 /**
