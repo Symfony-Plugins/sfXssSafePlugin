@@ -10,7 +10,7 @@
  * @uses <a href="http://htmlpurifier.org/">HTML Purifier</a>
  */
 
-require_once(sfConfig::get('sf_plugins_dir').'/sfXssSafePlugin/lib/vendor/htmlpurifier/HTMLPurifier.auto.php');
+define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/../vendor/htmlpurifier'));
 
 /**
  * The function runs HTML Purifier as an alternative between
@@ -77,7 +77,7 @@ function esc_xsssafe($dirty_html)
       }
     }
 
-    if (SF_ENVIRONMENT == 'dev' || SF_ENVIRONMENT == 'test')
+    if (sfConfig::get('sf_environment') == 'dev' || sfConfig::get('sf_environment') == 'test')
     {
       // turns off cache
       $config->set('Cache', 'DefinitionImpl', null);
@@ -90,7 +90,7 @@ function esc_xsssafe($dirty_html)
 
     if ($hasCustom)
     {
-      $def =& $config->getHTMLDefinition(true);
+      $def = $config->getHTMLDefinition(true);
 
       // adds custom elements
       if (!empty($aElements))
@@ -98,7 +98,7 @@ function esc_xsssafe($dirty_html)
         foreach ($aElements as $name => $element)
         {
           $name = strtolower($name);
-          ${$name} =& $def->addElement(
+          ${$name} = $def->addElement(
             $name,
             $element['type'],
             $element['contents'],
@@ -119,7 +119,7 @@ function esc_xsssafe($dirty_html)
         foreach ($aAttributes as $name => $attr)
         {
           $name = strtolower($name);
-          ${$name} =& $def->addAttribute(
+          ${$name} = $def->addAttribute(
             $name,
             $attr['attr_name'],
             $attr['def']
