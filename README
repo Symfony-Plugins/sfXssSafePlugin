@@ -21,7 +21,7 @@ First of all, your application escaping strategy must be set to `both` or `on` t
 
 Include the helper in the templates where you want to use the new escaping strategy:
 {{{
-<?php use_helper('XssSafe') ?>
+use_helper('XssSafe')
 }}}
 
 As explained in the [http://www.symfony-project.org/book/1_0/07-Inside-the-View-Layer#Escaping%20Arrays%20and%20Objects symfony book], the methods of escaped objects accept an additionnal parameter for the escaping strategy. In addition to the core `ESC_HTMLENTITIES` and `ESC_RAW`, you can now use the `ESC_XSSSAFE` strategy.
