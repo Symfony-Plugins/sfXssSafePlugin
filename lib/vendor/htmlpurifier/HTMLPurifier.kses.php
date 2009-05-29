@@ -26,5 +26,3 @@ function kses($string, $allowed_html, $allowed_protocols = null) {
     $purifier = new HTMLPurifier($config);
     return $purifier->purify($string);
 }
-
-// vim: et sw=4 sts=4

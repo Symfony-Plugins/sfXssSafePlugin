@@ -5,8 +5,8 @@
  */
 class HTMLPurifier_AttrDef_CSS_ImportantDecorator extends HTMLPurifier_AttrDef
 {
-    public $def, $allow;
-
+    protected $def, $allow;
+    
     /**
      * @param $def Definition to wrap
      * @param $allow Whether or not to allow !important
@@ -36,5 +36,3 @@ class HTMLPurifier_AttrDef_CSS_ImportantDecorator extends HTMLPurifier_AttrDef
         return $string;
     }
 }
-
-// vim: et sw=4 sts=4
