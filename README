@@ -14,7 +14,7 @@ The `sfXssSafePlugin` allows to clean a string to prevent XSS attacks. It provid
     
 or
     
-    $php symfony plugin:install sfXssSafePlugin --release=x.x.x
+    $php symfony plugin:install sfXssSafePlugin --release=0.9.2
 
 ### Witout PEAR ###
 
