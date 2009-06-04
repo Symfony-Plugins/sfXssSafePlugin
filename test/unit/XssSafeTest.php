@@ -5,12 +5,9 @@
  */
 
 // initializes testing framework
-$app = 'frontend';
-
-$sf_symfony_dir = '/var/www/symfony/1.0/';
-
-require_once($sf_symfony_dir . '/lib/vendor/lime/lime.php');
-include(dirname(__FILE__).'/../../../../test/bootstrap/functional.php');
+$sf_root = dirname(__FILE__).'/../../../..';
+require_once($sf_root.'/lib/symfony/vendor/lime/lime.php');
+include($sf_root.'/test/bootstrap/functional.php');
 
 // add filters to the default configuration
 $definitions = array(
