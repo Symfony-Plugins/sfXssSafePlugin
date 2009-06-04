@@ -26,7 +26,7 @@ if (!class_exists('HTMLPurifier_Config'))
  */
 function esc_xsssafe($dirty_html)
 {
-  if (!$dirty_html)
+  if (false === $dirty_html || null === $dirty_html || 0 === $dirty_html)
   {
     return '';
   }
