@@ -1,13 +1,7 @@
 <?php
 
-/**
- * Unit tests for Sf 1.0
- */
-
-// initializes testing framework
-$sf_root = dirname(__FILE__).'/../../../..';
-require_once($sf_root.'/lib/symfony/vendor/lime/lime.php');
-include($sf_root.'/test/bootstrap/functional.php');
+// initializes testing framework [sf 1.2]
+require_once(dirname(__FILE__).'/../../../../test/bootstrap/unit.php');
 
 // add filters to the default configuration
 $definitions = array(
@@ -401,7 +395,7 @@ $t = new lime_test(count($xsssafe_tests)+count($miscellaneous_tests)+2, new lime
 // XssSafe Helper
 $t->diag('XssSafe Helper');
 $t->include_ok(sfConfig::get('sf_plugins_dir').'/sfXssSafePlugin/lib/helper/XssSafeHelper.php', 'XssSafe Helper include');
-$t->include_ok(sfConfig::get('sf_plugins_dir').'/sfXssSafePlugin/lib/vendor/htmlpurifier/HTMLPurifier.auto.php', 'HTML Purifier include');
+$t->is(class_exists('HTMLPurifier_Config'), true, 'HTML Purifier autoload');
 
 // XSS Attacks Smoketest
 $t->diag('XSS Attacks Smoketest');
