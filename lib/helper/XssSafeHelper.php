@@ -12,7 +12,7 @@
 
 define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/../vendor/htmlpurifier'));
 
-if (!class_exists('HTMLPurifier_Config'))
+if (!class_exists('HTMLPurifier_PropertyList'))
 {
   require_once(HTMLPURIFIER_PREFIX . '/HTMLPurifier.auto.php');
 }
