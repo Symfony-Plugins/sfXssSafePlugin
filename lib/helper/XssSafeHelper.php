@@ -31,7 +31,7 @@ function esc_xsssafe($dirty_html)
     return '';
   }
   
-  set_error_handler('XssSafeErrorHandler');
+  //set_error_handler('XssSafeErrorHandler');
   
   static $purifier = false;
   
@@ -61,7 +61,7 @@ function esc_xsssafe($dirty_html)
                 $aElements = $values;
               }
               // customizable attributes
-              elseif($directive == 'Attribute')
+              else if($directive == 'Attribute')
               {
                 $aAttributes = $values;
               }
@@ -69,12 +69,13 @@ function esc_xsssafe($dirty_html)
             }
             else
             {
-              if (($def == 'AutoFormat' && $directive == 'Custom') &&
-                  !class_exists("HTMLPurifier_Injector_$values"))
+              if (($def == 'AutoFormat' && $directive == 'Custom')
+                  &&
+                !class_exists("HTMLPurifier_Injector_$values"))
               {
                 continue;
               }
-              $config->set($def, $directive, $values);
+              $config->set(sprintf("%s.%s", $def, $directive), $values);
               // $values can be a string or an ArrayList
             }
           }
@@ -85,12 +86,12 @@ function esc_xsssafe($dirty_html)
     if (sfConfig::get('sf_environment') == 'dev' || sfConfig::get('sf_environment') == 'test')
     {
       // turns off cache
-      $config->set('Cache', 'DefinitionImpl', null);
+      $config->set(sprintf("%s.%s", 'Cache', 'DefinitionImpl'), null);
     }
     else
     {
       // sets the cache directory into Symfony cache directory
-      $config->set('Cache', 'SerializerPath', sfConfig::get('sf_cache_dir'));
+      $config->set(sprintf("%s.%s", 'Cache', 'DefinitionImpl'), sfConfig::get('sf_cache_dir'));
     }
 
     if ($hasCustom)

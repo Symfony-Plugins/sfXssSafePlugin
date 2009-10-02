@@ -1,7 +1,21 @@
 <?php
+/**
+ * Unit tests
+ *
+ * @author heristop
+ */
 
-// initializes testing framework [sf 1.2]
-require_once(dirname(__FILE__).'/../../../../test/bootstrap/unit.php');
+define('SF_ROOT_DIR',    realpath(dirname(__FILE__).'/../../../../'));
+define('SF_APP',         'frontend');
+define('SF_ENVIRONMENT', 'dev');
+define('SF_DEBUG',       true);
+
+require_once SF_ROOT_DIR.'/config/ProjectConfiguration.class.php';
+$configuration = ProjectConfiguration::getApplicationConfiguration(SF_APP, SF_ENVIRONMENT, SF_DEBUG);
+sfContext::createInstance($configuration);
+echo sprintf("Bootstrapping application \033[32m%s\033[0m in \033[32m%s\033[0m environment\n\n", SF_APP, SF_ENVIRONMENT);
+
+require_once SF_ROOT_DIR.'/lib/symfony/vendor/lime/lime.php';
 
 // add filters to the default configuration
 $definitions = array(
@@ -168,7 +182,7 @@ $xsssafe_tests = array(
   ),
   'Livescript' => array(
     'input'   => ' <IMG SRC="livescript:[code]">',
-    'output'  => ''
+    'output'  => ' '
   ),
   'META' => array(
     'input'   => '<META HTTP-EQUIV="refresh" CONTENT="0;url=javascript:alert(\'XSS\');">',
@@ -277,7 +291,7 @@ END
 t:alert("XSS")';</STYLE>
 END
 ,
-    'output'  => ''
+    'output'  => '    '
   ),
   'Embedded Tab' => array(
     'input'   => '<IMG
@@ -358,7 +372,7 @@ END
 $miscellaneous_tests = array(
   'YouTube Filter' => array(
     'input'   => '<object width="425" height="355"><param name="movie" value="http://www.youtube.com/v/HLHKgepRZ8M&hl=fr"></param><param name="wmode" value="transparent"></param><embed src="http://www.youtube.com/v/HLHKgepRZ8M&hl=fr" type="application/x-shockwave-flash" wmode="transparent" width="425" height="355"></embed></object>',
-    'output'  => '<object width="425" height="350" data="http://www.youtube.com/v/HLHKgepRZ8M"><param name="movie" value="http://www.youtube.com/v/HLHKgepRZ8M"></param><param name="wmode" value="transparent"></param><!--[if IE]><embed src="http://www.youtube.com/v/HLHKgepRZ8M"type="application/x-shockwave-flash"wmode="transparent" width="425" height="350" /><![endif]--></object>',
+    'output'  => '<object width="425" height="350" type="application/x-shockwave-flash" data="http://www.youtube.com/v/HLHKgepRZ8M"><param name="movie" value="http://www.youtube.com/v/HLHKgepRZ8M"></param><!--[if IE]><embed src="http://www.youtube.com/v/HLHKgepRZ8M"type="application/x-shockwave-flash"wmode="transparent" width="425" height="350" /><![endif]--></object>',
     'filter'  => true
   ),
   'Allowed Frame Targets Filter' => array(
@@ -385,7 +399,7 @@ $miscellaneous_tests = array(
 <param name="bgcolor" value="#000000">
 <embed src="/player/player.swf" flashvars="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv" quality="high" bgcolor="#000000" name="video_small" allowscriptaccess="sameDomain" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="370" width="417">
 </object>',
-    'output'  => '<embed src="/player/player.swf" flashvars="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv" quality="high" bgcolor="#000000" name="video_small" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="370" width="417" allowscriptaccess="never" enablejsurls="false" enablehref="false" />',
+    'output'  => '<embed src="/player/player.swf" flashvars="video=http://www.toppeo.com/flv/demospectacle4473EE7B_8003221.flv" quality="high" bgcolor="#000000" name="video_small" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" height="370" width="417" />',
     'filter'  => true
   )
 );
