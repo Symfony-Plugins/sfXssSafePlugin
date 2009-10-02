@@ -10,11 +10,11 @@ The `sfXssSafePlugin` allows to clean a string to prevent XSS attacks. It provid
 
 ### With PEAR ###
 
-    $php symfony plugin-install http://plugins.symfony-project.com/sfXssSafePlugin
+    > php symfony plugin-install http://plugins.symfony-project.com/sfXssSafePlugin
     
 or
     
-    $php symfony plugin:install sfXssSafePlugin --release=0.9.2
+    > php symfony plugin:install sfXssSafePlugin --release=0.9.5
 
 ### Witout PEAR ###
 
@@ -181,6 +181,9 @@ Finally, clear your cache to enable the autoloading Symfony feature to find the 
 
 ## Changelog ##
 
+### 2009-10-02 | 0.9.5 ###
+
+ * heristop : Migration to HTML Purifier 4.0
 
 ### 2009-05-29 | 0.9.2 ###
 
