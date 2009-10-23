@@ -31,7 +31,7 @@ function esc_xsssafe($dirty_html)
     return '';
   }
   
-  //set_error_handler('XssSafeErrorHandler');
+  set_error_handler('XssSafeErrorHandler');
   
   static $purifier = false;
   
