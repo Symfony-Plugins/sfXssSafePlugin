@@ -5,17 +5,9 @@
  * @author heristop
  */
 
-define('SF_ROOT_DIR',    realpath(dirname(__FILE__).'/../../../../'));
-define('SF_APP',         'frontend');
-define('SF_ENVIRONMENT', 'dev');
-define('SF_DEBUG',       true);
+require_once dirname(__FILE__).'/../../../../test/bootstrap/unit.php';
 
-require_once SF_ROOT_DIR.'/config/ProjectConfiguration.class.php';
-$configuration = ProjectConfiguration::getApplicationConfiguration(SF_APP, SF_ENVIRONMENT, SF_DEBUG);
-sfContext::createInstance($configuration);
-echo sprintf("Bootstrapping application \033[32m%s\033[0m in \033[32m%s\033[0m environment\n\n", SF_APP, SF_ENVIRONMENT);
-
-require_once SF_ROOT_DIR.'/lib/symfony/vendor/lime/lime.php';
+sfConfig::set('sf_environment', 'test');
 
 // add filters to the default configuration
 $definitions = array(
