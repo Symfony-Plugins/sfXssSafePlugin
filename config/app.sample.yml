@@ -1,3 +1,4 @@
+# Sample configuration file for app.yml with default values
 all:
   sfXssSafePlugin:
 
