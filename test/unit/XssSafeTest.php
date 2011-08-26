@@ -154,7 +154,7 @@ $xsssafe_tests = array(
   ),
   'IMG Embedded commands 1' => array(
     'input'   => '<IMG SRC="http://www.thesiteyouareon.com/somecommand.php?somevariables=maliciouscode">',
-    'output'  => '<img src="http://www.thesiteyouareon.com/somecommand.php?somevariables=maliciouscode" alt="somecommand.php?somevariables=maliciouscode" />'
+    'output'  => '<img src="http://www.thesiteyouareon.com/somecommand.php?somevariables=maliciouscode" alt="somecommand.php?somevariables=maliciousc" />'
   ),
   'IMG STYLE w/expression' => array(
     'input'   => 'exp/*<XSS STYLE=\'no\xss:noxss("*//*"); xss:&#101;x&#x2F;*XSS*//*/* /pression(alert("XSS"))\'>',
