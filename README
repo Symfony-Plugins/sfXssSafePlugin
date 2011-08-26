@@ -181,6 +181,10 @@ Finally, clear your cache to enable the autoloading Symfony feature to find the 
 
 ## Changelog ##
 
+### 2011-08-26 | 1.0.0 ### 
+
+ * heristop : Migration to HTML Purifier 4.3
+
 ### 2009-10-02 | 0.9.5 ###
 
  * heristop : Migration to HTML Purifier 4.0
