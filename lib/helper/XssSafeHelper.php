@@ -10,7 +10,7 @@
  * @uses <a href="http://htmlpurifier.org/">HTML Purifier</a>
  */
 
-define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/../vendor/htmlpurifier'));
+define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/../vendor/htmlpurifier/library'));
 
 if (!class_exists('HTMLPurifier_PropertyList'))
 {
